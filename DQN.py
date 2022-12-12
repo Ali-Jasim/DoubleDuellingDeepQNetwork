@@ -26,7 +26,7 @@ class QNetwork(nn.Module):
 
 
 class Agent():
-    def __init__(self, lr, gamma, actions, input_shape, eps, hidden_layer, batch_size=256, buffer_size=5000000):
+    def __init__(self, lr, gamma, actions, input_shape, eps, hidden_layer, batch_size=256, buffer_size=500000):
 
         # action space
         self.actions = [i for i in range(actions)]
@@ -78,7 +78,7 @@ class Agent():
         if states is not None:
 
             rewards = T.tensor(rewards).to(
-                self.Q.device).reshape(self.batch_size)
+                self.Q.device)
 
             # feed state batch to NN, then map our predicted Q values to actions
             # this is our prediction
@@ -87,14 +87,15 @@ class Agent():
             # feed next states batch to NN and get maximum expected return
             # for taking best action
             q_prediction_next = self.Q.forward(
-                next_states)[self.indices, actions]
-            q_prediction_next_max, _ = T.max(q_prediction_next, 0, True)
+                next_states)
 
-            # if the state is terminal, change Q value
-            q_prediction_next[terminal] = rewards[terminal]
+            q_next, max_act = T.max(q_prediction_next, 1)
 
             # using the bellman equation to produce a loss
-            q_target = rewards + self.gamma * q_prediction_next_max
+            q_target = rewards + (self.gamma *
+                                  q_prediction_next[self.indices, max_act])
+
+            q_target[terminal] = rewards[terminal]
             loss = self.loss(q_prediction, q_target)
 
             # neural network optimization
