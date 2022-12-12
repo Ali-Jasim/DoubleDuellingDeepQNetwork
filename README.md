@@ -84,7 +84,7 @@
 
 ### Double Duelling Deep Q Network
 
-![graphimg3](result.png)
+![graphimg3](dddqn_result.png)
 
 **References:**
 
