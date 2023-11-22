@@ -1,11 +1,20 @@
 # Double Duelling Deep Q Network
 
+![LunarLanderGif](LunarLander_DRL.gif)
+
 ## **Requirements**
 
-- Python 3.10
+### Quick start
+
+```
+pip install -r requirements.txt
+python env.py
+```
+
+- Python 3.10+
 - Numpy
-- Pytorch 1.13
-- Gym 0.26.2
+- Pytorch
+- Gymnasium
   > [Lunar Lander Environment Docs](https://www.gymlibrary.dev/environments/box2d/lunar_lander/)
 
 ## **Deep Q Learning**

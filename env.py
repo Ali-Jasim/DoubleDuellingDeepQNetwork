@@ -1,12 +1,13 @@
-import gym
+import gymnasium as gym
 from DuellingDQN import *
 import matplotlib.pyplot as plt
 
 # if we can see evidence of learning on other openAI gym envs, we have implemented correctly
-env = gym.make("LunarLander-v2")
-obs, info = env.reset(seed=22)
+env = gym.make("LunarLander-v2", render_mode='human')
+obs, _= env.reset()
 
-agent = Agent(lr=0.005, gamma=0.99, eps=1, actions=4,
+
+agent = Agent(lr=0.01, gamma=0.99, eps=1, actions=4,
               input_shape=obs.shape, hidden_layer=512)
 print(agent.Q.device)
 epochs = 500
@@ -24,6 +25,7 @@ for _ in range(epochs):
     reward_total = 0
     steps = 0
     while not terminated and not truncated:
+
         action = policy(obs)
         observation, reward, terminated, truncated, info = env.step(action)
 
@@ -45,7 +47,7 @@ for _ in range(epochs):
         if epochs % 10 == 0:
             scores.append(np.mean(rewards[-10:]))
 
-        env.reset(seed=22)
+        env.reset()
 
 
 plt.plot(scores)
